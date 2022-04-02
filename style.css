@@ -44,32 +44,55 @@ input:focus {
 }
 
 .text-input {
-    padding: 10px;
     display: block;
     width:100%;
     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
-    border: 2px solid black;
+    padding-inline: 20px;
+    padding-block: 30px;
+    border: 0px solid black;
     height: 40px;
+
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .text-input:focus-visible {
     border-radius: 10px;
-    border: 2px solid black;
+    border: 0px solid black;
 }
 
+hr.line {
+    margin-top: 20px;
+    margin-inline: 20px;
+    border-top: 2px solid #666;
+}
 
 .button, .save {
     display: block;
     width: 100%;
     border-radius: 10px;
     border: 0;
-    height: 40px;
     background-color: royalblue;
     color: white;
     font-weight: 700;
+    padding-inline: 20px;
+    padding-block: 22px;
+
+    transition: background-color 100ms ease-in-out;
+
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 5px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
+
+.button:hover {
+    background-color: hsl(225, 73%, 40%);
+    /* transition: background-color 250ms ease-in-out; */
+}
+
+.button:active {
+    background-color: hsl(225, 73%, 30%);
+}
+
 
 .list {
     text-decoration: none;
@@ -79,12 +102,16 @@ input:focus {
 .todo {
     display: flex;
     flex-direction: row;
-    padding-top: 10px;
-    gap: 0.5rem;
+    gap: 1rem;
+
+    margin-top: 20px;
+    padding-inline: 20px;
+    padding-block: 20px;
 
     align-items: center;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
-
 .text {
     flex-grow: 1;
 }
@@ -97,3 +124,17 @@ input:focus {
     flex-grow: 0;
     padding: 5px;
 }
+
+.checkButton {
+    width: 1rem;
+    height: 1rem;
+}
+
+.icon {
+    width: 1rem;
+    height: 1rem;
+    /* background-color: red; */
+    display: flex;
+    align-content: center;
+}
+

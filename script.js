@@ -60,7 +60,7 @@ function onStart() {
     })
 }
 
-function addNewTask(newTodo) {
+function addNewTask(newTodo, show = 0) {
     if (newTodo.text === '') return
 
     const todoList = document.querySelector('.list')
@@ -68,53 +68,84 @@ function addNewTask(newTodo) {
     const newList = document.createElement('div')
     newList.className = 'todo'
 
-    const checkButton = document.createElement('button')
-    checkButton.className = 'checkButton'
-    checkButton.innerText = '완료'
+    const checkButton = document.createElement('input')
+    checkButton.setAttribute('type', 'checkbox')
+    checkButton.classList.add('icon')
+    checkButton.checked = newTodo.done
     checkButton.addEventListener('click', (e) => {
+        newTodo.done = !newTodo.done
+        checkButton.checked = newTodo.done
+
         const task = e.path[1].childNodes[1]
-        task.classList.toggle('done')
-        if (task.classList.contains('done')) {
-            newTodo.done = true
+        if (newTodo.done) {
+            task.classList.add('done')
         } else {
-            newTodo.done = false
+            task.classList.remove('done')
         }
+
         updateDB()
     })
 
     const textArea = document.createElement('p')
-    textArea.className = 'text'
+    textArea.classList.add('text')
     textArea.innerText = newTodo.text
-    if (newTodo.done === true) {
-        textArea.classList.toggle('done')
+    if (newTodo.done) {
+        textArea.classList.add('done')
+    } else {
+        textArea.classList.remove('done')
     }
     textArea.addEventListener('click', (e) => {
-        const task = e.path[0]
-        console.log(task)
-        task.classList.toggle('done')
-        if (task.classList.contains('done')) {
-            newTodo.done = true
+        newTodo.done = !newTodo.done
+        const task = e.path[1].childNodes[0]
+        if (newTodo.done) {
+            textArea.classList.add('done')
+            task.checked = true
         } else {
-            newTodo.done = false
+            textArea.classList.remove('done')
+            task.checked = false
         }
         updateDB()
     })
 
-    const deleteButton = document.createElement('button')
-    deleteButton.className = 'deleteButton'
-    deleteButton.innerText = '지우기'
-    deleteButton.addEventListener('click', (e) => {
-        e.path[1].remove()
+    // const deleteButton = document.createElement('button')
+    // deleteButton.className = 'deleteButton'
+    // deleteButton.innerText = '지우기'
+    // deleteButton.addEventListener('click', (e) => {
+    //     e.path[1].remove()
+    //     todoData = todoData.filter((data) => {
+    //         return data.idx !== newTodo.idx
+    //     })
+    //     updateDB()
+    // })
+
+    const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    // deleteIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    deleteIcon.setAttribute('height', '20px')
+    deleteIcon.setAttribute('width', '20px')
+    deleteIcon.setAttribute('viewBox', '0 0 24 24')
+    deleteIcon.setAttribute('fill', '#666666')
+
+    const deleteIconSVG = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    deleteIconSVG.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z')
+    deleteIconSVG.setAttribute('height', '300px')
+    deleteIcon.append(deleteIconSVG)
+
+    deleteIcon.classList.add('close')
+
+    deleteIcon.addEventListener('click', (e) => {
         todoData = todoData.filter((data) => {
             return data.idx !== newTodo.idx
         })
         updateDB()
+        printTodo()
     })
 
+    // newList.classList.add('show')
     newList.append(checkButton)
     newList.append(textArea)
     // newList.append(editButton)
-    newList.append(deleteButton)
+    // newList.append(deleteButton)
+    newList.append(deleteIcon)
 
     todoList.append(newList)
 }
@@ -137,7 +168,7 @@ function printTodo() {
         data.remove()
     })
 
-    todoData.forEach((data) => {
+    todoData.forEach((data, idx) => {
         addNewTask(data)
     })
 }
