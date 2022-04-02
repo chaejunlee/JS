@@ -24,7 +24,7 @@ btn.addEventListener('click', (e) => {
 
     printTodo()
 
-    saveItem()
+    updateDB()
 })
 
 inputText.addEventListener('keypress', (e) => {
@@ -38,7 +38,7 @@ inputText.addEventListener('keypress', (e) => {
 
     printTodo()
 
-    saveItem()
+    updateDB()
 })
 
 onStart()
@@ -50,7 +50,7 @@ function onStart() {
         todoData = []
     }
 
-    highestIdx = localStorage.getItem('highestIdx')
+    highestIdx = parseInt(localStorage.getItem('highestIdx'))
     if (highestIdx === null) {
         highestIdx = 0
     }
@@ -79,7 +79,7 @@ function addNewTask(newTodo) {
         } else {
             newTodo.done = false
         }
-        localStorage.setItem('todoData', JSON.stringify(todoData))
+        updateDB()
     })
 
     const textArea = document.createElement('p')
@@ -97,7 +97,7 @@ function addNewTask(newTodo) {
         } else {
             newTodo.done = false
         }
-        localStorage.setItem('todoData', JSON.stringify(todoData))
+        updateDB()
     })
 
     const deleteButton = document.createElement('button')
@@ -108,7 +108,7 @@ function addNewTask(newTodo) {
         todoData = todoData.filter((data) => {
             return data.idx !== newTodo.idx
         })
-        localStorage.setItem('todoData', JSON.stringify(todoData))
+        updateDB()
     })
 
     newList.append(checkButton)
@@ -149,7 +149,9 @@ function getText() {
     return inputText
 }
 
-function saveItem() {
+function updateDB() {
+    if (todoData.length === 0) highestIdx = 0
+
     localStorage.setItem('todoData', JSON.stringify(todoData))
     localStorage.setItem('highestIdx', highestIdx)
 }
