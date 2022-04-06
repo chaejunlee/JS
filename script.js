@@ -20,41 +20,15 @@ const inputBox = document.querySelector('.input-box')
 
 const shadowTop = document.querySelector('.shadow--top')
 const shadowBottom = document.querySelector('.shadow--bottom')
-const content = document.querySelector('.list-content')
-const container = document.querySelector('.list-container')
 const placeholder = document.createElement('p')
 placeholder.classList.add('placeholder')
-placeholder.innerText = `엔터를 눌러
+placeholder.innerText = `엔터 혹은 + 를 눌러
 새로운 태스크를
 추가하세요`
 
 window.addEventListener('keypress', enterToShow)
 
 const TRANSITION_TIME = 250
-
-let contentScrollHeight = content.scrollHeight - container.offsetHeight
-
-function addShadow() {
-    contentScrollHeight = content.scrollHeight - container.offsetHeight
-    if (contentScrollHeight > 0) {
-        console.log(contentScrollHeight)
-        shadowBottom.style.opacity = 1
-        return
-    }
-
-    shadowTop.style.opacity = 0
-    shadowBottom.style.opacity = 0
-}
-
-// content.addEventListener('scroll', function () {
-//     // addShadow()
-//     contentScrollHeight = content.scrollHeight - container.offsetHeight
-//     console.log(contentScrollHeight)
-//     let currentScroll = this.scrollTop / (contentScrollHeight)
-//     //console.log(this.scrollTop)
-//     shadowTop.style.opacity = currentScroll
-//     shadowBottom.style.opacity = 1 - currentScroll
-// })
 
 updateButton.addEventListener('click', () => {
     if (typeof todoDialog.showModal === 'function') {
