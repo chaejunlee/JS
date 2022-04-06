@@ -14,17 +14,81 @@ let todoData
 let highestIdx
 const inputText = document.querySelector('.text-input')
 const btn = document.querySelector('.button')
-const saveButton = document.querySelector('.save')
+const updateButton = document.querySelector('.addButton')
+const todoDialog = document.querySelector('.todoDialog')
+const inputBox = document.querySelector('.input-box')
+
+const shadowTop = document.querySelector('.shadow--top')
+const shadowBottom = document.querySelector('.shadow--bottom')
+const content = document.querySelector('.list-content')
+const container = document.querySelector('.list-container')
+const placeholder = document.createElement('p')
+placeholder.classList.add('placeholder')
+placeholder.innerText = `엔터를 눌러
+새로운 태스크를
+추가하세요`
+
+window.addEventListener('keypress', enterToShow)
+
+const TRANSITION_TIME = 250
+
+let contentScrollHeight = content.scrollHeight - container.offsetHeight
+
+function addShadow() {
+    contentScrollHeight = content.scrollHeight - container.offsetHeight
+    if (contentScrollHeight > 0) {
+        console.log(contentScrollHeight)
+        shadowBottom.style.opacity = 1
+        return
+    }
+
+    shadowTop.style.opacity = 0
+    shadowBottom.style.opacity = 0
+}
+
+// content.addEventListener('scroll', function () {
+//     // addShadow()
+//     contentScrollHeight = content.scrollHeight - container.offsetHeight
+//     console.log(contentScrollHeight)
+//     let currentScroll = this.scrollTop / (contentScrollHeight)
+//     //console.log(this.scrollTop)
+//     shadowTop.style.opacity = currentScroll
+//     shadowBottom.style.opacity = 1 - currentScroll
+// })
+
+updateButton.addEventListener('click', () => {
+    if (typeof todoDialog.showModal === 'function') {
+        todoDialog.showModal();
+        window.removeEventListener('keypress', enterToShow)
+        requestAnimationFrame(() => {
+            todoDialog.classList.add('show-modal')
+        })
+    } else {
+        alert("The <dialog> API is not supported by this browser");
+    }
+})
+
+todoDialog.addEventListener('close', () => {
+    //
+})
 
 btn.addEventListener('click', (e) => {
     const newContent = getText()
     if (newContent === '') return
 
-    addToDB(newContent)
+    setTimeout(() => {
+        todoDialog.close()
 
-    printTodo()
+        printTodo()
+        // addNewTask(addToDB(newContent))
 
-    updateDB()
+        updateDB()
+
+        // addShadow()
+        window.addEventListener('keypress', enterToShow)
+    }, TRANSITION_TIME)
+
+    todoDialog.classList.remove('show-modal')
 })
 
 inputText.addEventListener('keypress', (e) => {
@@ -32,13 +96,21 @@ inputText.addEventListener('keypress', (e) => {
 
     const newContent = getText()
 
-    addToDB(newContent)
+    setTimeout(() => {
+        todoDialog.close()
 
-    const todoList = document.querySelectorAll('.todo')
+        addToDB(newContent)
 
-    printTodo()
+        printTodo()
+        // addNewTask(addToDB(newContent))
 
-    updateDB()
+        updateDB()
+
+        // addShadow()
+        window.addEventListener('keypress', enterToShow)
+    }, TRANSITION_TIME)
+
+    todoDialog.classList.remove('show-modal')
 })
 
 onStart()
@@ -55,9 +127,16 @@ function onStart() {
         highestIdx = 0
     }
 
+    if (todoData.length === 0) {
+        const todoList = document.querySelector('.list')
+        todoList.append(placeholder)
+    }
+
     todoData.forEach((data) => {
         addNewTask(data)
     })
+
+    // addShadow()
 }
 
 function addNewTask(newTodo, show = 0) {
@@ -147,7 +226,7 @@ function addNewTask(newTodo, show = 0) {
     // newList.append(deleteButton)
     newList.append(deleteIcon)
 
-    todoList.append(newList)
+    todoList.prepend(newList)
 }
 
 function addToDB(newContent) {
@@ -159,6 +238,8 @@ function addToDB(newContent) {
         important: 0
     }
     todoData.push(newTodo)
+
+    return newTodo
 }
 
 function printTodo() {
@@ -171,6 +252,8 @@ function printTodo() {
     todoData.forEach((data, idx) => {
         addNewTask(data)
     })
+
+    // addShadow()
 }
 
 function getText() {
@@ -185,4 +268,25 @@ function updateDB() {
 
     localStorage.setItem('todoData', JSON.stringify(todoData))
     localStorage.setItem('highestIdx', highestIdx)
+
+    if (todoData.length === 0) {
+        const todoList = document.querySelector('.list')
+        todoList.append(placeholder)
+    } else {
+        placeholder.remove();
+    }
+}
+
+function enterToShow(e, args) {
+    if (e.key !== 'Enter') return
+
+    if (typeof todoDialog.showModal === 'function') {
+        todoDialog.showModal();
+        requestAnimationFrame(() => {
+            todoDialog.classList.add('show-modal')
+        })
+        window.removeEventListener('keypress', enterToShow);
+    } else {
+        alert("The <dialog> API is not supported by this browser");
+    }
 }

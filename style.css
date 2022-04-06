@@ -8,35 +8,88 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    /* background-color: rgb(245, 245, 245); */
+}
+
+/* .shadow {
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 10px;
+    background: red;
+  }
+
+.shadow--top {
+    top: 0;
+    background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.35), transparent);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent);
+    opacity: 0;
+}
+
+.shadow--bottom {
+    bottom: 0;
+    background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.35), transparent);
+} */
+
+header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #aaa;
+    padding-block: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
+    color: blacks;
+    z-index: 100;
 }
 
 .container {
     max-width: 800px;
-    width: 800px;
-
-    padding: 3em;
-
+    width: 100%;
+    height: 100%;
+    
+    /* padding-top: 3em; */
+    /* padding-inline: 1em; */
+    
     display: flex;
     flex-direction: column;
+    position: relative;
+    
+    /* overflow: scroll; */
 }
 
 .title {
-    margin-inline: auto;
-    padding-bottom: 1em;
+    /* margin-inline: auto;
+    padding-top: 3rem; */
+    flex-grow: 0;
+    font-size: 2.5rem;
 }
 
-.list {
-    width: 100%;
+h2 {
+    margin-block: 0.5em;
 }
 
 .input-box {
     width: 100%;
+    /* margin-block: 1rem; */
+    flex-grow: 0;
+    padding: 20px 20px;
+    border-radius: 3rem;
 }
 
 input:focus {
@@ -46,15 +99,14 @@ input:focus {
 .text-input {
     display: block;
     width:100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-block: 1rem;
     border-radius: 10px;
     padding-inline: 20px;
     padding-block: 30px;
     border: 0px solid black;
     height: 40px;
 
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
 }
 
 .text-input:focus-visible {
@@ -66,6 +118,7 @@ hr.line {
     margin-top: 20px;
     margin-inline: 20px;
     border-top: 2px solid #666;
+    flex-grow: 0;
 }
 
 .button, .save {
@@ -81,7 +134,7 @@ hr.line {
 
     transition: background-color 100ms ease-in-out;
 
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 5px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
 }
 
 .button:hover {
@@ -93,10 +146,25 @@ hr.line {
     background-color: hsl(225, 73%, 30%);
 }
 
+.list-container {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    border-radius: 0.5rem;
+}
+
+.list-content {
+    overflow: scroll;
+    height: 100%;
+}
 
 .list {
+    /* overflow: scroll; */
     text-decoration: none;
     list-style: none;
+    flex-grow: 1;
+    padding: 10px 20px 5rem 20px;
+    /* margin: -20px -20px; */
 }
 
 .todo {
@@ -108,16 +176,30 @@ hr.line {
     padding-inline: 20px;
     padding-block: 20px;
 
+    width: 100%;
     align-items: center;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
+    background-color: rgba(255, 255, 255, 1);
+
+    transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
+    box-shadow: none;
 }
+
+.todo:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
+    transform: scale(1.01);
+}
+
 .text {
     flex-grow: 1;
+    transition: 100ms ease-in-out;
 }
 
 .done {
     text-decoration: line-through;
+    color: #999;
+    
+    transition: 100ms ease-in-out;
 }
 
 .checkButton, .deleteButton, .editButton {
@@ -138,3 +220,78 @@ hr.line {
     align-content: center;
 }
 
+
+.addButton {
+    position: sticky;
+    bottom: 3rem;
+    right: 3rem;
+
+    background-color: hsl(225, 73%, 57%);
+    padding-inline: 3rem;
+    padding-block: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 2rem;
+    color: white;
+
+    cursor: pointer;
+    user-select: none;
+
+    border-radius: 3rem;
+
+    transition: 250ms ease-in-out;
+
+    z-index: 100;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
+}
+
+.addButton:hover {
+    background-color: hsl(225, 73%, 40%);
+    transform: scale(1.05);
+    /* transition: background-color 250ms ease-in-out; */
+}
+
+.addButton:active {
+    background-color: hsl(225, 73%, 30%);
+}
+
+.todoDialog {
+    margin: auto;
+    padding-block: 2rem;
+    padding-inline: 1rem;
+    
+    max-width: 800px;
+    width: 90%;
+
+    border-radius: 3rem;
+    border: none;
+
+    opacity: 0;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px;
+    transition: opacity 250ms ease-out;
+}
+
+.todoDialog::backdrop {
+    background-color: #333;
+    opacity: 0.5;
+}
+
+.todoDialog.show-modal {
+    opacity: 1;
+}
+
+.placeholder {
+    margin-top: 3rem;
+    display: block;
+    width: fit-content;
+    margin-inline: auto;
+    text-align: center;
+
+    font-size: 2rem;
+    font-weight: lighter;
+    color: #999;
+    line-height: 3rem;
+}

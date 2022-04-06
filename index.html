@@ -5,22 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>투두 앱</title>
+    <title>투두둨</title>
 </head>
 <body>
+    <header>
+        <h1 class="title">투두둨</h1>
+    </header>
     <div class="container">
-        <h1 class="title">투두 앱</h1>
-        <div class="input-box">
-            <label>
-                <h2>새로운 작업 추가</h2>
-                <input class="text-input" type="text" placeholder="Task...">
-            </label>
-            <button class="button">추가하기</button>
+        <div class="list-container">
+            <!-- <div class="shadow shadow--top"></div>
+            <div class="shadow shadow--bottom"></div> -->
+            <div class="list-content">
+                <ul class="list">
+                </ul>
+            </div>
         </div>
-        <hr class="line"/>
-        <ul class="list">
-        </ul>
     </div>
+    <div class="addButton">
+        <p>새로운 작업 추가</p>
+    </div>
+    <dialog class="todoDialog">
+        <div class="input-box">
+            <div method="dialog">
+                <label>
+                    <h2>새로운 작업 추가</h2>
+                    <input class="text-input" type="text" placeholder="Task...">
+                </label>
+                <button class="button">추가하기</button>
+            </div>
+        </div>
+    </dialog>
     <script src="script.js"></script>
 </body>
 </html>
