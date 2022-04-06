@@ -68,7 +68,7 @@ h2 {
     /* margin-block: 1rem; */
     flex-grow: 0;
     padding: 20px 20px;
-    border-radius: 3rem;
+    border-radius: 10px;
 }
 
 input:focus {
@@ -248,7 +248,7 @@ hr.line {
     max-width: 800px;
     width: 90%;
 
-    border-radius: 3rem;
+    border-radius: 10px;
     border: none;
 
     opacity: 0;

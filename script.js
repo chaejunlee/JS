@@ -26,14 +26,14 @@ placeholder.innerText = `엔터 혹은 + 를 눌러
 새로운 태스크를
 추가하세요`
 
-window.addEventListener('keypress', enterToShow)
+window.addEventListener('keypress', toggleModal)
 
-const TRANSITION_TIME = 250
+const TRANSITION_TIME = 200
 
 updateButton.addEventListener('click', () => {
     if (typeof todoDialog.showModal === 'function') {
         todoDialog.showModal();
-        window.removeEventListener('keypress', enterToShow)
+        window.removeEventListener('keypress', toggleModal)
         requestAnimationFrame(() => {
             todoDialog.classList.add('show-modal')
         })
@@ -43,7 +43,7 @@ updateButton.addEventListener('click', () => {
 })
 
 todoDialog.addEventListener('close', () => {
-    //
+    window.addEventListener('keypress', toggleModal)
 })
 
 btn.addEventListener('click', (e) => {
@@ -61,7 +61,7 @@ btn.addEventListener('click', (e) => {
         updateDB()
 
         // addShadow()
-        window.addEventListener('keypress', enterToShow)
+        window.addEventListener('keypress', toggleModal)
     }, TRANSITION_TIME)
 
     todoDialog.classList.remove('show-modal')
@@ -83,7 +83,7 @@ inputText.addEventListener('keypress', (e) => {
         updateDB()
 
         // addShadow()
-        window.addEventListener('keypress', enterToShow)
+        window.addEventListener('keypress', toggleModal)
     }, TRANSITION_TIME)
 
     todoDialog.classList.remove('show-modal')
@@ -253,16 +253,16 @@ function updateDB() {
     }
 }
 
-function enterToShow(e, args) {
-    if (e.key !== 'Enter') return
-
-    if (typeof todoDialog.showModal === 'function') {
-        todoDialog.showModal();
-        requestAnimationFrame(() => {
-            todoDialog.classList.add('show-modal')
-        })
-        window.removeEventListener('keypress', enterToShow);
-    } else {
-        alert("The <dialog> API is not supported by this browser");
+function toggleModal(e, args) {
+    if (e.key === 'Enter') {
+        if (typeof todoDialog.showModal === 'function') {
+            todoDialog.showModal();
+            requestAnimationFrame(() => {
+                todoDialog.classList.add('show-modal')
+            })
+            window.removeEventListener('keypress', toggleModal)
+        } else {
+            alert("The <dialog> API is not supported by this browser");
+        }
     }
 }
