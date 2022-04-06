@@ -53,6 +53,8 @@ btn.addEventListener('click', (e) => {
     setTimeout(() => {
         todoDialog.close()
 
+        addToDB(newContent)
+
         printTodo()
         // addNewTask(addToDB(newContent))
 
