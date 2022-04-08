@@ -17,12 +17,12 @@ const btn = document.querySelector('.button')
 const updateButton = document.querySelector('.addButton')
 const todoDialog = document.querySelector('.todoDialog')
 const inputBox = document.querySelector('.input-box')
+const closeModal = document.querySelector('.modal-close')
 
-const shadowTop = document.querySelector('.shadow--top')
-const shadowBottom = document.querySelector('.shadow--bottom')
 const placeholder = document.createElement('p')
 placeholder.classList.add('placeholder')
-placeholder.innerText = `엔터 혹은 + 를 눌러
+placeholder.innerText =
+    `엔터 혹은 + 를 눌러
 새로운 태스크를
 추가하세요`
 
@@ -31,15 +31,11 @@ window.addEventListener('keypress', toggleModal)
 const TRANSITION_TIME = 200
 
 updateButton.addEventListener('click', () => {
-    if (typeof todoDialog.showModal === 'function') {
-        todoDialog.showModal();
-        window.removeEventListener('keypress', toggleModal)
-        requestAnimationFrame(() => {
-            todoDialog.classList.add('show-modal')
-        })
-    } else {
-        alert("The <dialog> API is not supported by this browser");
-    }
+    todoDialog.showModal();
+    window.removeEventListener('keypress', toggleModal)
+    requestAnimationFrame(() => {
+        todoDialog.classList.add('show-modal')
+    })
 })
 
 todoDialog.addEventListener('close', () => {
@@ -175,17 +171,18 @@ function addNewTask(newTodo, show = 0) {
 
     const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     // deleteIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-    deleteIcon.setAttribute('height', '20px')
-    deleteIcon.setAttribute('width', '20px')
+    deleteIcon.setAttribute('height', '1.5rem')
+    deleteIcon.setAttribute('width', '1.5rem')
     deleteIcon.setAttribute('viewBox', '0 0 24 24')
     deleteIcon.setAttribute('fill', '#666666')
 
     const deleteIconSVG = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     deleteIconSVG.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z')
-    deleteIconSVG.setAttribute('height', '300px')
+    // deleteIconSVG.setAttribute('height', '300px')
     deleteIcon.append(deleteIconSVG)
 
     deleteIcon.classList.add('close')
+    deleteIcon.classList.add('icon')
 
     deleteIcon.addEventListener('click', (e) => {
         todoData = todoData.filter((data) => {
@@ -266,3 +263,13 @@ function toggleModal(e, args) {
         }
     }
 }
+
+closeModal.addEventListener('click', () => {
+    setTimeout(() => {
+        todoDialog.close()
+
+        window.addEventListener('keypress', toggleModal)
+    }, TRANSITION_TIME)
+
+    todoDialog.classList.remove('show-modal')
+})
