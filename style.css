@@ -183,17 +183,29 @@ background: linear-gradient(45deg, var(--primary-color-1-darker) 0%, var(--prima
     transform: scale(1.01);
 }
 
+.content-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    transition: 250ms ease-in-out;
+}
+
 .text {
     flex-grow: 1;
-    transition: 100ms ease-in-out;
+    /* transition: 100ms ease-in-out; */
+    font-size: 1rem;
+}
+
+.date {
+    flex-shrink: 0;
     font-size: 1rem;
 }
 
 .done {
     text-decoration: line-through;
     color: #999;
-    
-    transition: 100ms ease-in-out;
 }
 
 .checkButton, .deleteButton, .editButton {

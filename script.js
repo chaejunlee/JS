@@ -73,7 +73,11 @@ function addNewTask(newTodo, show = 0) {
     newList.className = 'todo'
 
     const checkButton = document.createElement('input')
+    const contentArea = document.createElement('div')
     const textArea = document.createElement('p')
+    const dateArea = document.createElement('p')
+
+    // Check Box
 
     checkButton.setAttribute('type', 'checkbox')
     checkButton.classList.add('icon')
@@ -82,7 +86,7 @@ function addNewTask(newTodo, show = 0) {
         newTodo.done = !newTodo.done
         checkButton.checked = newTodo.done
 
-        const task = textArea
+        const task = contentArea
         if (newTodo.done) {
             task.classList.add('done')
         } else {
@@ -92,27 +96,40 @@ function addNewTask(newTodo, show = 0) {
         updateDB()
     })
 
+    // Content Area
+
+    contentArea.classList.add('content-area')
+
     textArea.classList.add('text')
+    dateArea.classList.add('date')
+
     const date = new Date(newTodo.dueDate)
-    textArea.innerText = newTodo.text + ' ' + newTodo.dueDate
+    textArea.innerText = newTodo.text
+    dateArea.innerText = date.toLocaleString()
 
     if (newTodo.done) {
-        textArea.classList.add('done')
+        contentArea.classList.add('done')
     } else {
-        textArea.classList.remove('done')
+        contentArea.classList.remove('done')
     }
-    textArea.addEventListener('click', (e) => {
+    contentArea.addEventListener('click', (e) => {
         newTodo.done = !newTodo.done
         const task = checkButton
         if (newTodo.done) {
-            textArea.classList.add('done')
+            contentArea.classList.add('done')
             task.checked = true
         } else {
-            textArea.classList.remove('done')
+            contentArea.classList.remove('done')
             task.checked = false
         }
         updateDB()
     })
+
+    contentArea.append(textArea)
+    contentArea.append(dateArea)
+
+
+    // Delete Icon
 
     const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     // deleteIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
@@ -137,11 +154,10 @@ function addNewTask(newTodo, show = 0) {
         printTodo()
     })
 
-    // newList.classList.add('show')
+    // Add to the list
+
     newList.append(checkButton)
-    newList.append(textArea)
-    // newList.append(editButton)
-    // newList.append(deleteButton)
+    newList.append(contentArea)
     newList.append(deleteIcon)
 
     todoList.prepend(newList)
