@@ -86,7 +86,7 @@ input:focus {
     outline:none;
 }
 
-.text-input {
+.text-input, .date-input {
     display: block;
     width:100%;
     margin-block: 1rem;

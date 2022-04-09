@@ -13,11 +13,12 @@
 let todoData
 let highestIdx
 const inputText = document.querySelector('.text-input')
+const inputDate = document.querySelector('.date-input')
 const btn = document.querySelector('.button')
 const updateButton = document.querySelector('.addButton')
 const todoDialog = document.querySelector('.todoDialog')
 const inputBox = document.querySelector('.input-box')
-const closeModal = document.querySelector('.modal-close')
+const modalCloseButton = document.querySelector('.modal-close')
 
 const placeholder = document.createElement('p')
 placeholder.classList.add('placeholder')
@@ -26,63 +27,17 @@ placeholder.innerText =
 새로운 태스크를
 추가하세요`
 
-window.addEventListener('keypress', toggleModal)
+const TRANSITION_TIME = 250
 
-const TRANSITION_TIME = 200
+window.addEventListener('keypress', openModal)
+updateButton.addEventListener('click', openModal)
 
-updateButton.addEventListener('click', () => {
-    todoDialog.showModal();
-    window.removeEventListener('keypress', toggleModal)
-    requestAnimationFrame(() => {
-        todoDialog.classList.add('show-modal')
-    })
-})
+btn.addEventListener('click', closeModal)
+inputText.addEventListener('keypress', (e) => closeModal(e, { method: 'keyboard' }))
+modalCloseButton.addEventListener('click', (e) => closeModal(e, { method: 'button' }))
 
 todoDialog.addEventListener('close', () => {
-    window.addEventListener('keypress', toggleModal)
-})
-
-btn.addEventListener('click', (e) => {
-    const newContent = getText()
-    if (newContent === '') return
-
-    setTimeout(() => {
-        todoDialog.close()
-
-        addToDB(newContent)
-
-        printTodo()
-        // addNewTask(addToDB(newContent))
-
-        updateDB()
-
-        // addShadow()
-        window.addEventListener('keypress', toggleModal)
-    }, TRANSITION_TIME)
-
-    todoDialog.classList.remove('show-modal')
-})
-
-inputText.addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter') return
-
-    const newContent = getText()
-
-    setTimeout(() => {
-        todoDialog.close()
-
-        addToDB(newContent)
-
-        printTodo()
-        // addNewTask(addToDB(newContent))
-
-        updateDB()
-
-        // addShadow()
-        window.addEventListener('keypress', toggleModal)
-    }, TRANSITION_TIME)
-
-    todoDialog.classList.remove('show-modal')
+    window.addEventListener('keypress', openModal)
 })
 
 onStart()
@@ -107,8 +62,6 @@ function onStart() {
     todoData.forEach((data) => {
         addNewTask(data)
     })
-
-    // addShadow()
 }
 
 function addNewTask(newTodo, show = 0) {
@@ -120,6 +73,8 @@ function addNewTask(newTodo, show = 0) {
     newList.className = 'todo'
 
     const checkButton = document.createElement('input')
+    const textArea = document.createElement('p')
+
     checkButton.setAttribute('type', 'checkbox')
     checkButton.classList.add('icon')
     checkButton.checked = newTodo.done
@@ -127,7 +82,7 @@ function addNewTask(newTodo, show = 0) {
         newTodo.done = !newTodo.done
         checkButton.checked = newTodo.done
 
-        const task = e.path[1].childNodes[1]
+        const task = textArea
         if (newTodo.done) {
             task.classList.add('done')
         } else {
@@ -137,9 +92,10 @@ function addNewTask(newTodo, show = 0) {
         updateDB()
     })
 
-    const textArea = document.createElement('p')
     textArea.classList.add('text')
-    textArea.innerText = newTodo.text
+    const date = new Date(newTodo.dueDate)
+    textArea.innerText = newTodo.text + ' ' + newTodo.dueDate
+
     if (newTodo.done) {
         textArea.classList.add('done')
     } else {
@@ -147,7 +103,7 @@ function addNewTask(newTodo, show = 0) {
     }
     textArea.addEventListener('click', (e) => {
         newTodo.done = !newTodo.done
-        const task = e.path[1].childNodes[0]
+        const task = checkButton
         if (newTodo.done) {
             textArea.classList.add('done')
             task.checked = true
@@ -157,17 +113,6 @@ function addNewTask(newTodo, show = 0) {
         }
         updateDB()
     })
-
-    // const deleteButton = document.createElement('button')
-    // deleteButton.className = 'deleteButton'
-    // deleteButton.innerText = '지우기'
-    // deleteButton.addEventListener('click', (e) => {
-    //     e.path[1].remove()
-    //     todoData = todoData.filter((data) => {
-    //         return data.idx !== newTodo.idx
-    //     })
-    //     updateDB()
-    // })
 
     const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     // deleteIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
@@ -202,11 +147,12 @@ function addNewTask(newTodo, show = 0) {
     todoList.prepend(newList)
 }
 
-function addToDB(newContent) {
+function addToDB(newContent, dueDate) {
     if (newContent === '') return
     let newTodo = {
         idx: highestIdx++,
         text: newContent,
+        dueDate: dueDate,
         done: false,
         important: 0
     }
@@ -225,8 +171,6 @@ function printTodo() {
     todoData.forEach((data, idx) => {
         addNewTask(data)
     })
-
-    // addShadow()
 }
 
 function getText() {
@@ -250,26 +194,49 @@ function updateDB() {
     }
 }
 
-function toggleModal(e, args) {
-    if (e.key === 'Enter') {
+function openModal(e, args) {
+    if (e.key === 'Enter' || e.key === undefined) {
         if (typeof todoDialog.showModal === 'function') {
             todoDialog.showModal();
+            inputDate.value = getCurrentTime()
             requestAnimationFrame(() => {
                 todoDialog.classList.add('show-modal')
             })
-            window.removeEventListener('keypress', toggleModal)
+            window.removeEventListener('keypress', openModal)
         } else {
             alert("The <dialog> API is not supported by this browser");
         }
     }
 }
 
-closeModal.addEventListener('click', () => {
-    setTimeout(() => {
-        todoDialog.close()
+function closeModal(e, args) {
+    if (e.key === 'Enter' || args.method === 'button' || args.method !== 'keyboard') {
+        const newContent = getText()
 
-        window.addEventListener('keypress', toggleModal)
-    }, TRANSITION_TIME)
+        if (newContent == '' && args.method !== 'button') return;
 
-    todoDialog.classList.remove('show-modal')
-})
+        const dueDate = document.querySelector('.date-input').value
+        const todoDialog = document.querySelector('.todoDialog')
+
+        setTimeout(() => {
+            todoDialog.close()
+
+            addToDB(newContent, dueDate)
+
+            printTodo()
+
+            updateDB()
+
+            // addShadow()
+            window.addEventListener('keypress', openModal)
+        }, TRANSITION_TIME)
+
+        todoDialog.classList.remove('show-modal')
+    }
+}
+
+function getCurrentTime() {
+    const offset = new Date().getTimezoneOffset() * 60000;
+    const now = new Date(Date.now() - offset)
+    return now.toISOString().substring(0, 16)
+}
