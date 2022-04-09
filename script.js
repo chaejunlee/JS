@@ -75,7 +75,7 @@ function addNewTask(newTodo, show = 0) {
     const checkButton = document.createElement('input')
     const contentArea = document.createElement('div')
     const textArea = document.createElement('p')
-    const dateArea = document.createElement('p')
+    const dateArea = document.createElement('div')
 
     // Check Box
 
@@ -101,11 +101,21 @@ function addNewTask(newTodo, show = 0) {
     contentArea.classList.add('content-area')
 
     textArea.classList.add('text')
+    textArea.innerText = newTodo.text
+    contentArea.append(textArea)
+
     dateArea.classList.add('date')
 
-    const date = new Date(newTodo.dueDate)
-    textArea.innerText = newTodo.text
-    dateArea.innerText = date.toLocaleString()
+    const date = document.createElement('p')
+    const time = document.createElement('p')
+
+    const timeData = new Date(newTodo.dueDate)
+
+    date.innerHTML = timeData.toLocaleDateString()
+    time.innerHTML = timeData.toLocaleTimeString()
+
+    dateArea.append(date)
+    dateArea.append(time)
 
     if (newTodo.done) {
         contentArea.classList.add('done')
@@ -125,7 +135,7 @@ function addNewTask(newTodo, show = 0) {
         updateDB()
     })
 
-    contentArea.append(textArea)
+
     contentArea.append(dateArea)
 
 

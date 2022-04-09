@@ -161,18 +161,14 @@ background: linear-gradient(45deg, var(--primary-color-1-darker) 0%, var(--prima
     gap: 1.5rem;
 
     margin-top: 20px;
-    padding-inline: 2rem;
-    padding-block: 2rem;
+    padding-inline: 1.5rem;
+    padding-block: 1.5rem;
 
     width: 100%;
     align-items: center;
     border-radius: 10px;
-    /* background-color: hsl(200, 100%, 95%); */
 
     border: 3px solid #eee;
-    /* background-image: linear-gradient(#fff, #fff), linear-gradient(45deg, var(--primary-color-1) 0%, var(--primary-color-2) 100%);
-    background-origin: border-box;
-    background-clip: padding-box, border-box; */
 
     transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
     box-shadow: none;
@@ -188,6 +184,7 @@ background: linear-gradient(45deg, var(--primary-color-1-darker) 0%, var(--prima
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: end;
 
     transition: 250ms ease-in-out;
 }
@@ -201,6 +198,10 @@ background: linear-gradient(45deg, var(--primary-color-1-darker) 0%, var(--prima
 .date {
     flex-shrink: 0;
     font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
 }
 
 .done {
