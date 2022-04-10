@@ -111,8 +111,12 @@ function addNewTask(newTodo, show = 0) {
 
     const timeData = new Date(newTodo.dueDate)
 
-    date.innerHTML = timeData.toLocaleDateString()
-    time.innerHTML = timeData.toLocaleTimeString()
+    const timeArray = newTodo.dueDate.split('T')
+
+    // date.innerHTML = timeArray[0]
+    time.innerHTML = timeArray[1]
+    date.innerHTML = timeArray[0].substring(2, timeArray[0].length).replaceAll('-', '/')
+    // time.innerHTML = timeData.toLocaleTimeString()
 
     dateArea.append(date)
     dateArea.append(time)
