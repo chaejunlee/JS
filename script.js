@@ -32,7 +32,7 @@ const TRANSITION_TIME = 250
 window.addEventListener('keypress', openModal)
 updateButton.addEventListener('click', openModal)
 
-btn.addEventListener('click', closeModal)
+btn.addEventListener('click', (e) => closeModal(e, { method: 'button' }))
 inputText.addEventListener('keypress', (e) => closeModal(e, { method: 'keyboard' }))
 modalCloseButton.addEventListener('click', (e) => closeModal(e, { method: 'button' }))
 
